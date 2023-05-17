@@ -55,9 +55,11 @@ func main() {
 			// Don't just pass l from the outer scope to checkLink. The code will compile and run,
 			// but you'll get a warning like: "loop variable l captured by func literalloopclosure"
 			// Basically, sharing variables like this b/w different gorotuines (i.e., b/w the main
-			// goroutine and its child goroutines) will cause weird stuff to happen, especially if
-			// we end up changing that variable. Instead, make sure to use a copy of l that is passed
-			// to this function literal.
+			// goroutine and its child goroutines. In this case, "link" is that shared variable) will
+			// cause weird stuff to happen, especially if we end up changing that variable. Instead,
+			// make sure to use a copy of l that is passed to this function literal. This issue is mentioned
+			// in the "Effective Go" docs here: https://go.dev/doc/effective_go#channels (search for the text
+			// "the bug is that").
 			checkLink(link, c)
 		}(l)
 	}
